@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} My Store {% endblock title %}
+
+{% block content %}
+<br/>
+    
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Username</label>
+          {{form.username}}
+          {% if form.errors.username %}
+          <div id="emailHelp" class="form-text text-danger">{{form.errors.username}}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            {{form.email}}
+            {% if form.errors.email %}
+            <div id="emailHelp" class="form-text text-danger">{{form.errors.email}}</div>
+            {% endif %}
+          </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          {{form.password1}}
+          {% if form.errors.password1 %}
+          <div id="emailHelp" class="form-text text-danger">{{form.errors.password1}}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"> Confirm Password</label>
+            {{form.password2}}
+            {% if form.errors.password2 %}
+            <div id="emailHelp" class="form-text text-danger">{{form.errors.password2}}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Registar</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Go to Login</a></p>
+</div>
+
+{% endblock content %}

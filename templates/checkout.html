@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} My cart {% endblock %}
+
+{% block content %}
+<br/><br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="container">
+                <h4>Items in my cart</h4>
+                <a href="{% url 'mycart' %}">Update Cart</a>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for cp in cart_obj.cartproduct_set.all %}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{cp.product.name}}</td>
+                        <td>{{cp.quantity}}</td>
+                        <td>{{cp.subtotal}}</td>
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                        <th>Total</th>
+                        <th>{{cart_obj.total}}</th>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+                <h4>Check out form</h4>
+                <form method="POST">
+                  {% csrf_token %}
+                  {{form.as_p}}
+                  <input class="btn btn-primary" type="submit" value="Place Order">
+                </form>  
+            </div>   
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

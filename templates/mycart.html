@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %} My cart {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Items in my cart</h4>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cp in cart.cartproduct_set.all %}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{cp.product.name}}</td>
+                    <td>{{cp.quantity}}</td>
+                    <td>{{cp.subtotal}}</td>
+                    <td>
+                      <a href="{% url 'managecart' cp.id %}?action=inc" class="btn btn-primary"> + </a>
+                      <a href="{% url 'managecart' cp.id %}?action=dec" class="btn btn-warning"> - </a>
+                      <a href="{% url 'managecart' cp.id  %}?action=rmv" class="btn btn-danger"> x </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  <tr>
+                    <th>Total</th>
+                    <th>{{cart.total}}</th>
+                    <th><a href="{% url 'emptycart' %}">Empty Cart</a></th>
+                  </tr>
+                  <tr>
+                    <th><a class="btn btn-info" href="{% url 'checkout' %}">Checkout</a></th>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

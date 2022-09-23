@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} My Store {% endblock title %}
+
+{% block content %}
+    <br/>
+<div class="container product_data">
+    <div class='row'>
+        <div class="col-md-6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 py-2">
+                    <div class="card" style="width: 25rem;">
+                        {% if product.image %}
+                        <img src="{{product.image.url}}" style="height: 350px; object-fit: cover;" alt="...">
+                        {% endif %}
+                        <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">{{product.selling_price}}</p>
+                        <a href="{% url 'home' %}" class="btn btn-primary">Back</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 py-2">
+            
+            <p class="card-text">{{product.description}}</p>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                {% csrf_token %}
+                <input type="hidden" value="{{product.id}}" class="prod_id">
+                <button type="button" class="btn btn-primary decrement-btn">Minus</button>
+                <input type="text" class="form-control quantity-input bg-secondary border-0 text-center" value="1">
+                <button type="button" class="btn btn-primary increment-btn">Plus</button>
+            </div>
+            <button type="button" class="btn btn-secondary px-3 addToCartBtn">Add To Cart</button>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

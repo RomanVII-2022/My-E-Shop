@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} My Store {% endblock title %}
+
+{% block content %}
+<br/>
+    
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Username</label>
+          {{form.username}}
+          {% if form.errors.username %}
+          <div id="emailHelp" class="form-text text-danger">{{form.errors.username}}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          {{form.password}}
+          {% if form.errors.password %}
+          <div id="emailHelp" class="form-text text-danger">{{form.errors.password}}</div>
+          {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'registar' %}{% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Go to Registar</a></p>
+</div>
+
+{% endblock content %}
