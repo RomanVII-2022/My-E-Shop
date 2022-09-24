@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} My profile {% endblock title %}
+
+{% block content %}
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h3>Order Detail</h3><hr>
+            <p><span class="fw-bold">Order ID:</span> #ORDER_{{order.id}}</p> 
+            <p><span class="fw-bold">Order Status:</span> {{order.order_status}}</p>  
+            <p><span class="fw-bold">Ordered On:</span> {{order.created_at}} ({{order.created_at|timesince}} ago)</p> 
+            <p><span class="fw-bold">Customer Information:</span> {{order.ordered_by}} - {{order.mobile}}</p> 
+            <p><span class="fw-bold">Shipping Information:</span> {{order.shipping_address}} - {{order.email}}</p>
+            <h3>Your Orders</h3>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 {% for product in order.cart.cartproduct_set.all %}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{product.product}}</td>
+                    <td>{{product.quantity}}</td>
+                    <td>{{product.subtotal}}</td>
+                  </tr>
+                  {% endfor %}
+                  <tr>
+                    <th colspan="3" class="text-end">Total: </th>
+                    <th>Ksh{{order.cart.total|intcomma}}/-</th>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

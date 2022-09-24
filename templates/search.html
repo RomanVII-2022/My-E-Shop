@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} My Store {% endblock title %}
+
+{% block content %}
+    <br/>
+<div class="container">
+  <div class="row">
+    {% for product in products %}
+    <div class="col-md-4 py-2">
+      <div class="card" style="width: 25rem;">
+        {% if product.image %}
+        <img src="{{product.image.url}}" style="height: 350px; object-fit: cover;" alt="...">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">{{product.selling_price}}</p>
+          <a href="{% url 'productdetail' product.id %}" class="btn btn-primary">Product Details</a>
+          <a href="{% url 'addtocart' product.id %}" class="btn btn-primary">Add to Cart</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

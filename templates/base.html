@@ -29,6 +29,9 @@
               <li class="nav-item">
                 <a class="nav-link" style="color: #E1D9D1" href="{% url 'mycart' %}">My Cart</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: #E1D9D1" href="{% url 'profile' %}">My Profile</a>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" style="color: #E1D9D1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
@@ -50,9 +53,9 @@
                 <a class="nav-link" style="color: #E1D9D1" href="{% url 'logout' %}">Logout</a>
               </li>
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex" role="search" method="GET" action="search">
+              <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search" required>
+              <button class="btn btn-info" type="submit">Search</button>
             </form>
           </div>
         </div>

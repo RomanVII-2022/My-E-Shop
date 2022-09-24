@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
-from .views import AddCartView, MyCartView, CartManageView, EmptyCartView, CheckoutView
+from .views import AddCartView, MyCartView, CartManageView, EmptyCartView, CheckoutView, SearchView
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('managecart/<int:cart_id>', CartManageView.as_view(), name='managecart'),
     path('emptycart', EmptyCartView.as_view(), name="emptycart"),
     path('checkout', CheckoutView.as_view(), name='checkout'),
+    path('search', SearchView.as_view(), name='search'),
 ]
 

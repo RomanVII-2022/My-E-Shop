@@ -4,6 +4,8 @@ from django.http.response import JsonResponse
 from django.views.generic import TemplateView, View, CreateView
 from .forms import CheckoutForm
 from django.urls import reverse_lazy
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -20,7 +22,10 @@ class EcoMixin(object):
 
 
 def home(request):
-    products = Product.objects.all()
+    #products = Product.objects.all()
+    p = Paginator(Product.objects.all(), 2)
+    page = request.GET.get('page')
+    products = p.get_page(page)
     return render(request, 'home.html', {'products':products})
 
 
@@ -168,6 +173,19 @@ class CheckoutView(EcoMixin, CreateView):
         else:
             return redirect('home')
         return super().form_valid(form)
+
+
+class SearchView(TemplateView):
+    template_name = "search.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.method == "GET":
+            name = self.request.GET['search']
+            products = Product.objects.filter(Q(name__contains=name) | Q(description__contains=name))
+        context["products"] = products
+        return context
+    
          
         
     
