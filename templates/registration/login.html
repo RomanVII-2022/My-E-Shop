@@ -27,6 +27,7 @@
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
     <p>Don't have an account? <a href="{% url 'registar' %}{% if request.GET.next %}?next={{request.GET.next}}{% endif %}">Go to Registar</a></p>
+    <p>Forgot Password? <a href="{% url 'passwordforgot' %}">Reset Now</a></p>
 </div>
 
 {% endblock content %}

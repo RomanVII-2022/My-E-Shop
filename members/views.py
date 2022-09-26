@@ -1,13 +1,20 @@
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, TemplateView, DetailView
+from django.views.generic import CreateView, TemplateView, DetailView, FormView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegistrationForm
+from .forms import RegistrationForm, PasswordForgotForm
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from myapp.models import Order
-
+from .forms import PasswordForgotForm, PasswordResetForm
+from django.contrib.auth.models import User
+from .utils import password_reset_token
+from django.core.mail import send_mail
+from django.conf import settings
+from django.urls import reverse
 # Create your views here.
+
+
 class RegistrationView(SuccessMessageMixin, CreateView):
     form_class = RegistrationForm
     template_name = "registration/register.html"
@@ -74,6 +81,59 @@ class OrderDetailView(DetailView):
         else:
             return redirect('login?back=/members/profile')
         return super().dispatch(request, *args, **kwargs)
+
+
+class PasswordForgotView(FormView):
+    template_name = "registration/passwordforgot.html"
+    form_class = PasswordForgotForm
+    success_url = '/members/passwordforgot?msg=sent'
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        url = self.request.META['HTTP_HOST']
+        user = User.objects.get(email=email)
+        user = user
+        text_content = 'Please Click the link below to reset your password.'
+        html_content = url + "/members/password-reset/" + email + \
+            "/" + password_reset_token.make_token(user) + "/"
+        send_mail(
+            'Password Reset Link | Django Ecommerce',
+            text_content + html_content,
+            settings.EMAIL_HOST_USER,
+            [email],
+            fail_silently=False,
+        )
+
+
+        return super().form_valid(form)
+
+
+class PasswordResetView(FormView):
+    template_name = "registration/passwordreset.html"
+    form_class = PasswordResetForm
+    success_url = "/members/login"
+
+    def dispatch(self, request, *args, **kwargs):
+        email = self.kwargs.get("email")
+        user = User.objects.get(email=email)
+        token = self.kwargs.get("token")
+        if user is not None and password_reset_token.check_token(user, token):
+            pass
+        else:
+            return redirect(reverse("passworforgot") + "?msg=error")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        password = form.cleaned_data['new_password']
+        email = self.kwargs.get("email")
+        user = User.objects.get(email=email)
+        user.set_password(password)
+        user.save()
+        return super().form_valid(form)
+
+
+
 
 
     

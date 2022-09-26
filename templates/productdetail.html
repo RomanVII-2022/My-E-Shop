@@ -15,6 +15,15 @@
                         {% if product.image %}
                         <img src="{{product.image.url}}" style="height: 350px; object-fit: cover;" alt="...">
                         {% endif %}
+                        <div class="row">
+                            {% for product in product.productimage_set.all %}
+                            <div class="col-md-4">
+                                {% if product.image %}
+                                <img src="{{product.image.url}}" style="width: 200px; height: 150px; object-fit: cover;" alt="...">
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
                         <div class="card-body">
                         <h5 class="card-title">{{product.name}}</h5>
                         <p class="card-text">{{product.selling_price}}</p>
@@ -25,8 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 py-2">
-            
+        <div class="col-md-6 py-2">         
             <p class="card-text">{{product.description}}</p>
             <div class="btn-group" role="group" aria-label="Basic example">
                 {% csrf_token %}

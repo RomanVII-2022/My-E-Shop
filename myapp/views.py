@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Category, Product, Cart, CartProduct
 from django.http.response import JsonResponse
-from django.views.generic import TemplateView, View, CreateView
+from django.views.generic import TemplateView, View, CreateView, FormView
 from .forms import CheckoutForm
 from django.urls import reverse_lazy
 from django.db.models import Q
@@ -186,7 +186,8 @@ class SearchView(TemplateView):
         context["products"] = products
         return context
     
-         
+
+
         
     
     
